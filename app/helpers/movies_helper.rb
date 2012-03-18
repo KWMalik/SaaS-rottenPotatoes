@@ -10,7 +10,7 @@ module MoviesHelper
   
   def sort_order()
     if(session[:order].blank?)
-      'ASC'
+      'DESC'
     else
       (session[:order] == 'ASC' ? 'DESC' : 'ASC')
     end

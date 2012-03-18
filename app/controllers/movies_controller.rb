@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.ratings
     
     session[:sort_by] ||= 'title'
-    session[:order] ||= 'ASC'
+    session[:order] ||= 'DESC'
     session[:ratings] ||= @all_ratings
     
     filters = ['sort_by','order','ratings']
