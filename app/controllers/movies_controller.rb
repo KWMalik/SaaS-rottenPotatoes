@@ -7,7 +7,25 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    
+    @all_ratings = Movie.ratings
+    
+    session[:sort_by] ||= 'title'
+    session[:order] ||= 'ASC'
+    session[:ratings] ||= @all_ratings
+    
+    filters = ['sort_by','order','ratings']
+      
+    session[:sort_by] = (params[:sort_by].blank? ? session[:sort_by] : params[:sort_by])
+    session[:order] = (params[:order].blank? ? session[:order] : params[:order])
+    session[:ratings] = (params[:ratings].blank? ? session[:ratings] : params[:ratings].keys)
+    
+    params.delete_if { |w| w =~ /controller|action$/ }
+    
+    redirect_to movies_path if !(params.keys & filters).empty?
+
+    @movies = Movie.where(:rating => session[:ratings]).order("#{session[:sort_by]} #{session[:order]}")
+    
   end
 
   def new
